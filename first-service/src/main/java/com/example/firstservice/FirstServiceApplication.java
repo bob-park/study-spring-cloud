@@ -1,12 +1,12 @@
-package com.example.fisrtservice;
+package com.example.firstservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class FisrtServiceApplication {
+public class FirstServiceApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(FisrtServiceApplication.class, args);
+    SpringApplication.run(FirstServiceApplication.class, args);
   }
 }
