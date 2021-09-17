@@ -1,0 +1,19 @@
+# server
+server:
+  port: 0 # random port
+
+# eureka
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+# spring
+spring:
+  application:
+    name: first-service

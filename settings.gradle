@@ -9,3 +9,6 @@ rootProject.name = 'ecoomerce'
 // modules
 include 'discovery-service'
 include 'user-service'
+include 'api-gateway-service'
+include 'first-service'
+include 'second-service'
