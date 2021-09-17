@@ -13,7 +13,7 @@ public class SecondController {
 
   private final Logger log = LoggerFactory.getLogger(getClass());
 
-  @GetMapping(path="welcome")
+  @GetMapping(path = "welcome")
   public String welcome() {
     return String.format("Welcome to the Second Service");
   }
@@ -24,5 +24,10 @@ public class SecondController {
     log.info("second-request : {}", header);
 
     return String.format("message : %s", header);
+  }
+
+  @GetMapping(path = "check")
+  public String check() {
+    return "Hi, there. This is a message from Second Service.";
   }
 }

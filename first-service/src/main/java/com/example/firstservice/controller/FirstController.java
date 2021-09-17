@@ -13,7 +13,7 @@ public class FirstController {
 
   private final Logger log = LoggerFactory.getLogger(getClass());
 
-  @GetMapping(path="welcome")
+  @GetMapping(path = "welcome")
   public String welcome() {
     return String.format("Welcome to the First Service");
   }
@@ -24,5 +24,10 @@ public class FirstController {
     log.info("first-request : {}", header);
 
     return String.format("message : %s", header);
+  }
+
+  @GetMapping(path = "check")
+  public String check() {
+    return "Hi, there. This is a message from First Service.";
   }
 }
