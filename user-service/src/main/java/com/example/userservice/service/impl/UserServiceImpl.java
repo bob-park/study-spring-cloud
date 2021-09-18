@@ -6,7 +6,7 @@ import com.example.userservice.repository.UserRepository;
 import com.example.userservice.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
-import org.modelmapper.spi.MatchingStrategy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -14,9 +14,12 @@ import java.util.UUID;
 @Service
 public class UserServiceImpl implements UserService {
 
+  private final PasswordEncoder passwordEncoder;
+
   private final UserRepository userRepository;
 
-  public UserServiceImpl(UserRepository userRepository) {
+  public UserServiceImpl(PasswordEncoder passwordEncoder, UserRepository userRepository) {
+    this.passwordEncoder = passwordEncoder;
     this.userRepository = userRepository;
   }
 
@@ -31,12 +34,10 @@ public class UserServiceImpl implements UserService {
 
     User user = mapper.map(userDto, User.class);
 
-    user.setEncryptPwd("encrypted_password");
+    user.setEncryptPwd(passwordEncoder.encode(userDto.getPwd()));
 
     userRepository.save(user);
 
-    UserDto returnUserDto = mapper.map(user, UserDto.class);
-
-    return returnUserDto;
+    return mapper.map(user, UserDto.class);
   }
 }
