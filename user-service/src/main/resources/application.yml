@@ -1,11 +1,29 @@
 # server
 server:
-  port: 0 # random port 사용
+  port: 8080 # random port 사용 - instance 가 여러개라도 eureka dashboard 에 단일로 표기됨
 
 # spring
 spring:
   application:
     name: user-service
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:tcp://localhost/~/Documents/study/spring-cloud-workspace/db/msa
+    username: sa
+    password:
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true
+
 
 # eureka
 eureka:
@@ -18,3 +36,6 @@ eureka:
     service-url:
       defaultZone: http://127.0.0.1:8761/eureka
 
+# application
+greeting:
+  message: Welcome to the Simple E-commerce.
