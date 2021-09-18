@@ -15,7 +15,7 @@ spring:
     open-in-view: false
     database-platform: H2
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
