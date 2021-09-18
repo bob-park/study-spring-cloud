@@ -33,7 +33,7 @@ spring:
             postLogger: true
       routes:
         - id: first-service
-#          uri: http://localhost:8081
+          #          uri: http://localhost:8081
           uri: lb://first-service
           predicates:
             - Path=/first-service/**
@@ -42,7 +42,7 @@ spring:
             #            - AddResponseHeader=first-response, first-response-header2
             - CustomFilter
         - id: second-service
-#          uri: http://localhost:8082
+          #          uri: http://localhost:8082
           uri: lb://second-service
           predicates:
             - Path=/second-service/**
@@ -55,4 +55,10 @@ spring:
                 baseMessage: Hi, there.
                 preLogger: true
                 postLogger: true
+        - id: user-sercice # API gateway 에 기본적으로 prefix 가 넘어가버림, 그래서 user service 에서 해당 prefix 를 넣던가, 아니면, filter 를 사용하여 uri 를 재정의 해야한다.
+          uri: lb://user-service
+          predicates:
+            - Path=/user-service/**
+          filters:
+            - RewritePath=/user-service/(?<uri>.*), /${uri}
 
