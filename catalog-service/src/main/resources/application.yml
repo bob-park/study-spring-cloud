@@ -13,12 +13,12 @@ spring:
     password:
   jpa:
     open-in-view: false
+    database-platform: H2
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: true
-    defer-datasource-initialization: true
 
 decorator:
   datasource:
