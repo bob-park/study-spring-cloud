@@ -1,6 +1,9 @@
 package com.example.userservice.commons.dto.user;
 
+import com.example.userservice.commons.dto.api.response.ResponseOrder;
+
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class UserDto {
 
@@ -12,6 +15,8 @@ public class UserDto {
   private LocalDateTime createAt;
 
   private String encryptPWd;
+
+  private List<ResponseOrder> orders;
 
   public String getEmail() {
     return email;
@@ -61,26 +66,11 @@ public class UserDto {
     this.encryptPWd = encryptPWd;
   }
 
-  @Override
-  public String toString() {
-    return "UserDto{"
-        + "email='"
-        + email
-        + '\''
-        + ", name='"
-        + name
-        + '\''
-        + ", pwd='"
-        + pwd
-        + '\''
-        + ", userId='"
-        + userId
-        + '\''
-        + ", createAt="
-        + createAt
-        + ", encryptPWd='"
-        + encryptPWd
-        + '\''
-        + '}';
+  public List<ResponseOrder> getOrders() {
+    return orders;
+  }
+
+  public void setOrders(List<ResponseOrder> orders) {
+    this.orders = orders;
   }
 }

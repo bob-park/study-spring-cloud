@@ -3,6 +3,7 @@ package com.example.userservice.controller;
 import com.example.userservice.commons.dto.api.request.RequestUser;
 import com.example.userservice.commons.dto.api.response.ResponseUser;
 import com.example.userservice.commons.dto.user.UserDto;
+import com.example.userservice.commons.entity.User;
 import com.example.userservice.commons.vo.Greeting;
 import com.example.userservice.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -10,6 +11,10 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/")
@@ -28,7 +33,8 @@ public class UserController {
 
   @GetMapping(path = "health_check")
   public String status() {
-    return "It's Working in User Service";
+    return String.format(
+        "It's Working in User Service on PORT %s", env.getProperty("local.server.port"));
   }
 
   @GetMapping(path = "welcome")
@@ -49,5 +55,22 @@ public class UserController {
     userService.createUser(userDto);
 
     return mapper.map(userDto, ResponseUser.class);
+  }
+
+  @GetMapping(path = "users")
+  public List<ResponseUser> getUsers() {
+    List<User> userList = userService.getUserByAll();
+
+    return userList.stream()
+        .map(user -> new ModelMapper().map(user, ResponseUser.class))
+        .collect(Collectors.toList());
+  }
+
+  @GetMapping(path = "users/{userId}")
+  public ResponseUser getUser(@PathVariable String userId) {
+
+    UserDto userDto = userService.getUserByUserId(userId);
+
+    return new ModelMapper().map(userDto, ResponseUser.class);
   }
 }

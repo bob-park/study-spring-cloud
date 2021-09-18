@@ -5,7 +5,7 @@ server:
 # spring
 spring:
   application:
-    name: user-service
+    name: order-service
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:tcp://localhost/~/Documents/study/spring-cloud-workspace/db/msa
@@ -13,6 +13,7 @@ spring:
     password:
   jpa:
     open-in-view: false
+    database-platform: H2
     hibernate:
       ddl-auto: update
     properties:
@@ -35,7 +36,3 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://127.0.0.1:8761/eureka
-
-# application
-greeting:
-  message: Welcome to the Simple E-commerce.
