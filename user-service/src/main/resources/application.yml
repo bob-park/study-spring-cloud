@@ -1,6 +1,6 @@
 # server
 server:
-  port: 0 # random port 사용
+  port: 0 # random port 사용 - instance 가 여러개라도 eureka dashboard 에 단일로 표기됨
 
 # spring
 spring:
@@ -18,3 +18,6 @@ eureka:
     service-url:
       defaultZone: http://127.0.0.1:8761/eureka
 
+# application
+greeting:
+  message: Welcome to the Simple E-commerce.
