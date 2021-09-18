@@ -61,4 +61,8 @@ spring:
             - Path=/user-service/**
           filters:
             - RewritePath=/user-service/(?<uri>.*), /${uri}
+        - id: catalog-sercice
+          uri: lb://catalog-service
+          predicates:
+            - Path=/catalog-service/**
 
