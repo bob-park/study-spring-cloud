@@ -33,6 +33,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     //    http.authorizeRequests().antMatchers("/users/**").permitAll();
 
     http.authorizeRequests()
+        .antMatchers("/actuator/**") // actuator 적용 제외
+        .permitAll()
         .antMatchers("/**")
         .hasIpAddress("192.168.0.31") // 해당 IP 가 들어있는 경우만 처리
         .and()

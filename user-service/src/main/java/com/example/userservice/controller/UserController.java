@@ -12,7 +12,10 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -30,9 +33,19 @@ public class UserController {
   }
 
   @GetMapping(path = "health_check")
-  public String status() {
-    return String.format(
-        "It's Working in User Service on PORT %s", env.getProperty("local.server.port"));
+  public Map<String, Object> status() {
+
+    //    return String.format(
+    //        "It's Working in User Service on PORT %s", env.getProperty("local.server.port"));
+
+    Map<String, Object> result = new LinkedHashMap<>();
+
+    result.put("local.server.port", env.getProperty("local.server.port"));
+    result.put("server.port", env.getProperty("server.port"));
+    result.put("token.secret", env.getProperty("token.secret"));
+    result.put("token.expiration-time", env.getProperty("token.expiration-time"));
+
+    return result;
   }
 
   @GetMapping(path = "welcome")
