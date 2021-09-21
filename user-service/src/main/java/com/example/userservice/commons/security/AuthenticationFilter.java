@@ -1,9 +1,13 @@
 package com.example.userservice.commons.security;
 
 import com.example.userservice.commons.dto.api.request.RequestLogin;
+import com.example.userservice.commons.dto.user.UserDto;
+import com.example.userservice.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -20,6 +24,18 @@ import java.util.ArrayList;
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
   private final Logger log = LoggerFactory.getLogger(getClass());
+
+  private final UserService userService;
+  private final Environment env;
+
+  public AuthenticationFilter(
+      UserService userService, Environment env, AuthenticationManager authenticationManager) {
+
+    super(authenticationManager);
+
+    this.userService = userService;
+    this.env = env;
+  }
 
   @Override
   public Authentication attemptAuthentication(
@@ -52,6 +68,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
       throws IOException, ServletException {
 
     // 인증 성공 후 작업 처리
-    log.debug("user: {}", ((User) authResult.getPrincipal()).getUsername());
+    String username = ((User) authResult.getPrincipal()).getUsername();
+
+    UserDto userDetails = userService.getUserDetailByEmail(username);
   }
 }
