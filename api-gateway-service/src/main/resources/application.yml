@@ -61,30 +61,6 @@ spring:
         #            - Path=/user-service/**
         #          filters:
         #            - RewritePath=/user-service/(?<uri>.*), /${uri}
-        - id: user-sercice # login
-          uri: lb://user-service
-          predicates:
-            - Path=/user-service/login
-            - Method=POST
-          filters:
-            - RemoveRequestHeader=Cookie
-            - RewritePath=/user-service/(?<segment>.*), /${segment}
-        - id: user-sercice # create user
-          uri: lb://user-service
-          predicates:
-            - Path=/user-service/users
-            - Method=POST
-          filters:
-            - RemoveRequestHeader=Cookie
-            - RewritePath=/user-service/(?<segment>.*), /${segment}
-        - id: user-sercice # 조회
-          uri: lb://user-service
-          predicates:
-            - Path=/user-service/**
-            - Method=GET
-          filters:
-            - RemoveRequestHeader=Cookie
-            - RewritePath=/user-service/(?<segment>.*), /${segment}
         - id: catalog-sercice
           uri: lb://catalog-service
           predicates:
@@ -93,4 +69,34 @@ spring:
           uri: lb://order-service
           predicates:
             - Path=/order-service/**
+        - id: user-sercice # login
+          uri: lb://user-service
+          predicates:
+            - Path=/user-service/login
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+        - id: user-sercice # create user
+          uri: lb://user-service
+          predicates:
+            - Path=/user-service/users
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+        - id: user-sercice # 조회
+          uri: lb://user-service
+          predicates:
+            - Path=/user-service/**
+            - Method=GET
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter # 인가 처리
 
+
+
+# token
+token:
+  secret: user_token
