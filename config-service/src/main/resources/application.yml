@@ -6,8 +6,20 @@ server:
 spring:
   application:
     name: config-service
+  ## Local file system
+  profiles:
+    active: native
   cloud:
     config:
       server:
-        git:
-          uri: file:///Users/hwpark/Documents/study/spring-cloud-workspace/git-local-repo
+#        git:
+          ## local git repository
+#          uri: file:///Users/hwpark/Documents/study/spring-cloud-workspace/git-local-repo
+          ## remote git repository
+#          uri: https://github.com/bob-park/study-spring-cloud.git
+#          username: [your username]
+#          password: [your password]
+        ## Local file system
+        native:
+          search-locations:
+            - file:///Users/hwpark/Documents/study/spring-cloud-workspace/git-local-repo
