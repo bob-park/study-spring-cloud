@@ -36,11 +36,11 @@ eureka:
     service-url:
       defaultZone: http://127.0.0.1:8761/eureka
 
-# application
+## application
 greeting:
   message: Welcome to the Simple E-commerce.
 
-# token
-token:
-  expiration-time: 86400000
-  secret: user_token
+## token
+#token:
+#  expiration-time: 86400000
+#  secret: user_token
