@@ -1,11 +1,13 @@
 package com.example.userservice.repository;
 
-import com.example.userservice.commons.entity.User;
+import com.example.userservice.commons.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
-  Optional<User> findByUserId(String userId);
+  Optional<UserEntity> findByUserId(String userId);
+
+  Optional<UserEntity> findByEmail(String username);
 }
