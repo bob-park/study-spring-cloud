@@ -4,6 +4,8 @@ import com.example.userservice.commons.dto.api.request.RequestLogin;
 import com.example.userservice.commons.dto.user.UserDto;
 import com.example.userservice.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -20,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -71,5 +74,18 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     String username = ((User) authResult.getPrincipal()).getUsername();
 
     UserDto userDetails = userService.getUserDetailByEmail(username);
+
+    String token =
+        Jwts.builder()
+            .setSubject(userDetails.getUserId())
+            .setExpiration(
+                new Date(
+                    System.currentTimeMillis()
+                        + Long.parseLong(env.getProperty("token.expiration-time"))))
+            .signWith(SignatureAlgorithm.HS512, env.getProperty("token.secret"))
+            .compact();
+
+    response.addHeader("token", token);
+    response.addHeader("userId", userDetails.getUserId());
   }
 }
