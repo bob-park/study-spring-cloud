@@ -2,9 +2,12 @@ package com.example.userservice.commons.security;
 
 import com.example.userservice.commons.dto.api.request.RequestLogin;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -15,6 +18,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
+  private final Logger log = LoggerFactory.getLogger(getClass());
 
   @Override
   public Authentication attemptAuthentication(
@@ -47,6 +52,6 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
       throws IOException, ServletException {
 
     // 인증 성공 후 작업 처리
-
+    log.debug("user: {}", ((User) authResult.getPrincipal()).getUsername());
   }
 }
