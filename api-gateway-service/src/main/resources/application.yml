@@ -7,7 +7,11 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include:
+          - refresh
+          - health
+          - beans
+          - httptrace
 
 
 # eureka
@@ -94,6 +98,14 @@ spring:
             - RemoveRequestHeader=Cookie
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
             - AuthorizationHeaderFilter # 인가 처리
+        - id: user-sercice  # actuator
+          uri: lb://user-service
+          predicates:
+            - Path=/user-service/actuator/**
+            - Method=GET, POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
 
 
 
