@@ -55,12 +55,36 @@ spring:
                 baseMessage: Hi, there.
                 preLogger: true
                 postLogger: true
-        - id: user-sercice # API gateway 에 기본적으로 prefix 가 넘어가버림, 그래서 user service 에서 해당 prefix 를 넣던가, 아니면, filter 를 사용하여 uri 를 재정의 해야한다.
+        #        - id: user-sercice # API gateway 에 기본적으로 prefix 가 넘어가버림, 그래서 user service 에서 해당 prefix 를 넣던가, 아니면, filter 를 사용하여 uri 를 재정의 해야한다.
+        #          uri: lb://user-service
+        #          predicates:
+        #            - Path=/user-service/**
+        #          filters:
+        #            - RewritePath=/user-service/(?<uri>.*), /${uri}
+        - id: user-sercice # login
+          uri: lb://user-service
+          predicates:
+            - Path=/user-service/login
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /${segment}
+        - id: user-sercice # create user
+          uri: lb://user-service
+          predicates:
+            - Path=/user-service/users
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /${segment}
+        - id: user-sercice # 조회
           uri: lb://user-service
           predicates:
             - Path=/user-service/**
+            - Method=GET
           filters:
-            - RewritePath=/user-service/(?<uri>.*), /${uri}
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /${segment}
         - id: catalog-sercice
           uri: lb://catalog-service
           predicates:
