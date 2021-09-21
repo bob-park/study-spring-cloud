@@ -1,3 +1,13 @@
-#server
+# server
 server:
   port: 8888
+
+# spring
+spring:
+  application:
+    name: config-service
+  cloud:
+    config:
+      server:
+        git:
+          uri: file:///Users/hwpark/Documents/study/spring-cloud-workspace/git-local-repo
