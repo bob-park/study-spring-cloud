@@ -3,7 +3,7 @@ package com.example.userservice.controller;
 import com.example.userservice.commons.dto.api.request.RequestUser;
 import com.example.userservice.commons.dto.api.response.ResponseUser;
 import com.example.userservice.commons.dto.user.UserDto;
-import com.example.userservice.commons.entity.User;
+import com.example.userservice.commons.entity.UserEntity;
 import com.example.userservice.commons.vo.Greeting;
 import com.example.userservice.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -12,12 +12,10 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/")
 public class UserController {
 
   private final Environment env;
@@ -59,10 +57,10 @@ public class UserController {
 
   @GetMapping(path = "users")
   public List<ResponseUser> getUsers() {
-    List<User> userList = userService.getUserByAll();
+    List<UserEntity> userEntityList = userService.getUserByAll();
 
-    return userList.stream()
-        .map(user -> new ModelMapper().map(user, ResponseUser.class))
+    return userEntityList.stream()
+        .map(userEntity -> new ModelMapper().map(userEntity, ResponseUser.class))
         .collect(Collectors.toList());
   }
 
