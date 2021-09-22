@@ -11,6 +11,7 @@ management:
           - refresh
           - health
           - beans
+          - busrefresh
 
 # spring
 spring:
@@ -28,6 +29,11 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: username
+    password: password
 
 decorator:
   datasource:
