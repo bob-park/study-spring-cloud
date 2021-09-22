@@ -116,5 +116,5 @@ spring:
 
 
 # token
-token:
-  secret: user_token
+#token:
+#  secret: user_token
