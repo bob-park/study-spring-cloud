@@ -6,6 +6,4 @@ dependencies {
     // spring cloud bus
     implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp'
 
-
-
 }
