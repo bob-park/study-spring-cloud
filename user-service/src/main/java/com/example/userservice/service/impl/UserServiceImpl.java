@@ -6,8 +6,11 @@ import com.example.userservice.commons.entity.UserEntity;
 import com.example.userservice.commons.feign.client.OrderServiceClient;
 import com.example.userservice.repository.UserRepository;
 import com.example.userservice.service.UserService;
+import feign.FeignException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +25,8 @@ import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+  private final Logger log = LoggerFactory.getLogger(getClass());
 
   private final PasswordEncoder passwordEncoder;
 
@@ -84,8 +89,16 @@ public class UserServiceImpl implements UserService {
     //
     //    List<ResponseOrder> ordersList = responseEntity.getBody();
 
-    /* Using as feign client */
-    List<ResponseOrder> ordersList = orderServiceClient.getOrders(userId);
+    /* Using feign client */
+    /* Feign exception handling */
+
+    List<ResponseOrder> ordersList = null;
+
+    try {
+      ordersList = orderServiceClient.getOrders(userId);
+    } catch (FeignException e) {
+      log.error(e.getMessage());
+    }
 
     userDto.setOrders(ordersList);
 

@@ -1,5 +1,6 @@
 package com.example.userservice.commons.config;
 
+import feign.Logger;
 import org.springframework.boot.actuate.trace.http.HttpTraceRepository;
 import org.springframework.boot.actuate.trace.http.InMemoryHttpTraceRepository;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
@@ -30,5 +31,10 @@ public class AppConfiguration {
   @LoadBalanced
   public RestTemplate getRestTemplate() {
     return new RestTemplate();
+  }
+
+  @Bean
+  public Logger.Level getLevel() {
+    return Logger.Level.FULL;
   }
 }
