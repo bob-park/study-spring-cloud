@@ -3,15 +3,21 @@ package com.example.userservice.service.impl;
 import com.example.userservice.commons.dto.api.response.ResponseOrder;
 import com.example.userservice.commons.dto.user.UserDto;
 import com.example.userservice.commons.entity.UserEntity;
+import com.example.userservice.commons.feign.client.OrderServiceClient;
 import com.example.userservice.repository.UserRepository;
 import com.example.userservice.service.UserService;
+import feign.FeignException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,13 +26,28 @@ import java.util.UUID;
 @Service
 public class UserServiceImpl implements UserService {
 
+  private final Logger log = LoggerFactory.getLogger(getClass());
+
   private final PasswordEncoder passwordEncoder;
 
   private final UserRepository userRepository;
 
-  public UserServiceImpl(PasswordEncoder passwordEncoder, UserRepository userRepository) {
+  private final Environment env;
+  private final RestTemplate restTemplate;
+
+  private final OrderServiceClient orderServiceClient;
+
+  public UserServiceImpl(
+      PasswordEncoder passwordEncoder,
+      UserRepository userRepository,
+      Environment env,
+      RestTemplate restTemplate,
+      OrderServiceClient orderServiceClient) {
     this.passwordEncoder = passwordEncoder;
     this.userRepository = userRepository;
+    this.env = env;
+    this.restTemplate = restTemplate;
+    this.orderServiceClient = orderServiceClient;
   }
 
   @Override
@@ -57,9 +78,31 @@ public class UserServiceImpl implements UserService {
 
     UserDto userDto = new ModelMapper().map(userEntity, UserDto.class);
 
-    List<ResponseOrder> orders = new ArrayList<>();
+    //    List<ResponseOrder> orders = new ArrayList<>();
 
-    userDto.setOrders(orders);
+    /* Using as rest template */
+    //    String orderUrl = String.format(env.getProperty("order-service.url"), userId);
+    //
+    //    ResponseEntity<List<ResponseOrder>> responseEntity =
+    //        restTemplate.exchange(
+    //            orderUrl, HttpMethod.GET, null, new ParameterizedTypeReference<>() {});
+    //
+    //    List<ResponseOrder> ordersList = responseEntity.getBody();
+
+    /* Using feign client */
+    /* Feign exception handling */
+    //    List<ResponseOrder> ordersList = null;
+    //
+    //    try {
+    //      ordersList = orderServiceClient.getOrders(userId);
+    //    } catch (FeignException e) {
+    //      log.error(e.getMessage());
+    //    }
+
+    /* Error Decoder */
+    List<ResponseOrder> ordersList = orderServiceClient.getOrders(userId);
+
+    userDto.setOrders(ordersList);
 
     return userDto;
   }
