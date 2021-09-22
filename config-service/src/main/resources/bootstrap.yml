@@ -1,0 +1,6 @@
+encrypt:
+#  key: hwpark_zzangzzangman # 대칭키
+  key-store:
+    location: file://${user.home}/Documents/study/spring-cloud-workspace/keystore/apiEncryptionKey.jks
+    password: 1q2w3e4r
+    alias: apiEncryptionKey

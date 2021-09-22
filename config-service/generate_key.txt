@@ -1,0 +1,11 @@
+-- generate key
+keytool -genkeypair -alias apiEncryptionKey -keyalg RSA -dname "CN=hwpark, OU=API Development, O=example.co.kr, L=Seoul, C=KR" -keypass "1q2w3e4r" -keystore apiEncryptionKey.jks -storepass "1q2w3e4r"
+
+-- export key
+keytool -export -alias apiEncryptionKey -keystore apiEncryptionKey.jks -rfc -file trustServer.cer
+
+-- import key
+keytool -import -alias trustServer -file trustServer.cer -keystore publicKey.jks
+
+-- check key
+keytool -list -keystore publicKey.jks -v
