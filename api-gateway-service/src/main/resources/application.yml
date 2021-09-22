@@ -12,6 +12,7 @@ management:
           - health
           - beans
           - httptrace
+          - busrefresh
 
 
 # eureka
@@ -26,6 +27,11 @@ eureka:
 spring:
   application:
     name: api-gateway-service
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: username
+    password: password
   cloud:
     gateway:
 
