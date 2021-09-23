@@ -8,7 +8,7 @@ dependencies {
     implementation('com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.7.1')
 
     // mariadb
-    implementation 'org.mariadb.jdbc:maraidb-java-client:2.7.2'
+    implementation 'org.mariadb.jdbc:mariadb-java-client:2.7.4'
 
 
     // jpa
