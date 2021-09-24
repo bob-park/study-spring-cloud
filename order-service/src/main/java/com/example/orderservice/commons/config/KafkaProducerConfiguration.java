@@ -20,7 +20,7 @@ public class KafkaProducerConfiguration {
   public ProducerFactory<String, String> producerFactory() {
     Map<String, Object> properties = new HashMap<>();
 
-    properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:49815");
+    properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:49816");
     properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringDeserializer.class);
     properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 
