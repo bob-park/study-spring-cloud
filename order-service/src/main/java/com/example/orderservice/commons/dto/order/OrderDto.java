@@ -59,4 +59,25 @@ public class OrderDto implements Serializable {
   public void setUserId(String userId) {
     this.userId = userId;
   }
+
+  @Override
+  public String toString() {
+    return "OrderDto{"
+        + "productId='"
+        + productId
+        + '\''
+        + ", qty="
+        + qty
+        + ", unitPrice="
+        + unitPrice
+        + ", totalPrice="
+        + totalPrice
+        + ", orderId='"
+        + orderId
+        + '\''
+        + ", userId='"
+        + userId
+        + '\''
+        + '}';
+  }
 }
