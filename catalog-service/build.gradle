@@ -13,5 +13,13 @@ dependencies {
 
     // spring cloud bus
     implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp'
+
+    // kafka
+    implementation 'org.springframework.kafka:spring-kafka'
+
+    // config
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+    implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
+
 }
 
