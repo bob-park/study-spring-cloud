@@ -4,7 +4,9 @@ import com.example.orderservice.commons.dto.api.request.RequestOrder;
 import com.example.orderservice.commons.dto.api.response.ResponseOrder;
 import com.example.orderservice.commons.dto.order.OrderDto;
 import com.example.orderservice.commons.entity.Order;
+import com.example.orderservice.commons.messagequeue.KafkaProducer;
 import com.example.orderservice.service.OrderService;
+
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.core.env.Environment;
@@ -22,9 +24,12 @@ public class OrderController {
 
   private final OrderService orderService;
 
-  public OrderController(Environment env, OrderService orderService) {
+  private final KafkaProducer kafkaProducer;
+
+  public OrderController(Environment env, OrderService orderService, KafkaProducer kafkaProducer) {
     this.env = env;
     this.orderService = orderService;
+    this.kafkaProducer = kafkaProducer;
   }
 
   @GetMapping(path = "health_check")
@@ -46,7 +51,12 @@ public class OrderController {
 
     OrderDto createdOrder = orderService.createOrder(orderDto);
 
-    return mapper.map(createdOrder, ResponseOrder.class);
+    ResponseOrder responseOrder = mapper.map(createdOrder, ResponseOrder.class);
+
+    /* send this order to the kafka */
+    kafkaProducer.send("example-catalog-topic", orderDto);
+
+    return responseOrder;
   }
 
   @GetMapping(path = "{userId}/orders")
