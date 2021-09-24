@@ -5,6 +5,7 @@ import com.example.orderservice.commons.dto.api.response.ResponseOrder;
 import com.example.orderservice.commons.dto.order.OrderDto;
 import com.example.orderservice.commons.entity.Order;
 import com.example.orderservice.commons.messagequeue.KafkaProducer;
+import com.example.orderservice.commons.messagequeue.OrderProducer;
 import com.example.orderservice.service.OrderService;
 
 import org.modelmapper.ModelMapper;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -25,11 +27,17 @@ public class OrderController {
   private final OrderService orderService;
 
   private final KafkaProducer kafkaProducer;
+  private final OrderProducer orderProducer;
 
-  public OrderController(Environment env, OrderService orderService, KafkaProducer kafkaProducer) {
+  public OrderController(
+      Environment env,
+      OrderService orderService,
+      KafkaProducer kafkaProducer,
+      OrderProducer orderProducer) {
     this.env = env;
     this.orderService = orderService;
     this.kafkaProducer = kafkaProducer;
+    this.orderProducer = orderProducer;
   }
 
   @GetMapping(path = "health_check")
@@ -49,12 +57,19 @@ public class OrderController {
 
     orderDto.setUserId(userId);
 
-    OrderDto createdOrder = orderService.createOrder(orderDto);
+    /* JPA */
+    //    OrderDto createdOrder = orderService.createOrder(orderDto);
+    //    ResponseOrder responseOrder = mapper.map(createdOrder, ResponseOrder.class);
 
-    ResponseOrder responseOrder = mapper.map(createdOrder, ResponseOrder.class);
+    /* kafka */
+    orderDto.setOrderId(UUID.randomUUID().toString());
+    orderDto.setTotalPrice(order.getUnitPrice() * order.getQty());
 
     /* send this order to the kafka */
     kafkaProducer.send("example-catalog-topic", orderDto);
+    orderProducer.send("orders", orderDto);
+
+    ResponseOrder responseOrder = mapper.map(orderDto, ResponseOrder.class);
 
     return responseOrder;
   }
