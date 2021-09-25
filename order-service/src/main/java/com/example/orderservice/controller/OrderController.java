@@ -81,11 +81,19 @@ public class OrderController {
   }
 
   @GetMapping(path = "{userId}/orders")
-  public List<ResponseOrder> getOrder(@PathVariable String userId) {
+  public List<ResponseOrder> getOrder(@PathVariable String userId) throws Exception {
 
     log.info("Before retrieve orders data");
 
     List<Order> orders = orderService.getOrdersByUserId(userId);
+
+    try {
+      Thread.sleep(1000);
+
+      throw new Exception("Issue!!!");
+    } catch (InterruptedException e) {
+      log.warn(e.getMessage());
+    }
 
     log.info("After retrieve orders data");
 
