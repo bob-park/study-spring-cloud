@@ -6,11 +6,12 @@ import com.example.userservice.commons.entity.UserEntity;
 import com.example.userservice.commons.feign.client.OrderServiceClient;
 import com.example.userservice.repository.UserRepository;
 import com.example.userservice.service.UserService;
-import feign.FeignException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,17 +39,21 @@ public class UserServiceImpl implements UserService {
 
   private final OrderServiceClient orderServiceClient;
 
+  private final CircuitBreakerFactory circuitBreakerFactory;
+
   public UserServiceImpl(
       PasswordEncoder passwordEncoder,
       UserRepository userRepository,
       Environment env,
       RestTemplate restTemplate,
-      OrderServiceClient orderServiceClient) {
+      OrderServiceClient orderServiceClient,
+      CircuitBreakerFactory circuitBreakerFactory) {
     this.passwordEncoder = passwordEncoder;
     this.userRepository = userRepository;
     this.env = env;
     this.restTemplate = restTemplate;
     this.orderServiceClient = orderServiceClient;
+    this.circuitBreakerFactory = circuitBreakerFactory;
   }
 
   @Override
@@ -100,7 +106,15 @@ public class UserServiceImpl implements UserService {
     //    }
 
     /* Error Decoder */
-    List<ResponseOrder> ordersList = orderServiceClient.getOrders(userId);
+    //    List<ResponseOrder> ordersList = orderServiceClient.getOrders(userId);
+
+    /* Using Circuit Breaker */
+    CircuitBreaker circuitbreaker = circuitBreakerFactory.create("circuitbreaker");
+
+    // list 값이 존재하지 않을 경우 empty list 를 반환
+    List<ResponseOrder> ordersList =
+        circuitbreaker.run(
+            () -> orderServiceClient.getOrders(userId), throwable -> Collections.emptyList());
 
     userDto.setOrders(ordersList);
 
