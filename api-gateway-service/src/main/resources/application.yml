@@ -78,6 +78,14 @@ spring:
           uri: lb://catalog-service
           predicates:
             - Path=/catalog-service/**
+        - id: order-sercice  # actuator
+          uri: lb://user-service
+          predicates:
+            - Path=/order-service/actuator/**
+            - Method=GET, POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/order-service/(?<segment>.*), /$\{segment}
         - id: order-sercice
           uri: lb://order-service
           predicates:
