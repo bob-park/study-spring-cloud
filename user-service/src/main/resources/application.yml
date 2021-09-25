@@ -17,23 +17,14 @@ management:
 spring:
   application:
     name: user-service
-#  datasource:
-#    driver-class-name: org.h2.Driver
-#    url: jdbc:h2:tcp://localhost/~/Documents/study/spring-cloud-workspace/db/msa
-#    username: sa
-#    password:
-#  jpa:
-#    open-in-view: false
-#    hibernate:
-#      ddl-auto: update
-#    properties:
-#      hibernate:
-#        format_sql: true
-#  rabbitmq:
-#    host: 127.0.0.1
-#    port: 5672
-#    username: username
-#    password: password
+  ## zipkin
+  zipkin:
+    base-url: http://127.0.0.1:9411
+    enabled: true
+  ## sleuth
+  sleuth:
+    sampler:
+      probability: 1.0
 
 decorator:
   datasource:
@@ -56,7 +47,6 @@ eureka:
 greeting:
   message: Welcome to the Simple E-commerce.
 
-## token
-#token:
-#  expiration-time: 86400000
-#  secret: user_token
+logging:
+  level:
+    com.example: debug
