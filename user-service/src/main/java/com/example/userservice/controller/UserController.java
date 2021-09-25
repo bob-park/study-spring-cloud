@@ -6,6 +6,7 @@ import com.example.userservice.commons.dto.user.UserDto;
 import com.example.userservice.commons.entity.UserEntity;
 import com.example.userservice.commons.vo.Greeting;
 import com.example.userservice.service.UserService;
+import io.micrometer.core.annotation.Timed;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.core.env.Environment;
@@ -31,6 +32,7 @@ public class UserController {
     this.userService = userService;
   }
 
+  @Timed(value = "users.status", longTask = true)
   @GetMapping(path = "health_check")
   public Map<String, Object> status() {
 
@@ -47,6 +49,7 @@ public class UserController {
     return result;
   }
 
+  @Timed(value = "users.welcome", longTask = true)
   @GetMapping(path = "welcome")
   public String welcome() {
     //    return env.getProperty("greeting.message");
