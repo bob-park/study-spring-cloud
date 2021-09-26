@@ -36,7 +36,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .antMatchers("/actuator/**") // actuator 적용 제외
         .permitAll()
         .antMatchers("/**")
-        .hasIpAddress("192.168.0.31") // 해당 IP 가 들어있는 경우만 처리
+        .hasIpAddress(env.getProperty("gateway.ip")) // 해당 IP 가 들어있는 경우만 처리
         .and()
         .addFilter(getAuthenticationFilter()); // 필터 추가
 
