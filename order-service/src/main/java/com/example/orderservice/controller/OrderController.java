@@ -70,7 +70,7 @@ public class OrderController {
     //    orderDto.setTotalPrice(order.getUnitPrice() * order.getQty());
 
     /* send this order to the kafka */
-    //    kafkaProducer.send("example-catalog-topic", orderDto);
+    kafkaProducer.send("example-catalog-topic", orderDto);
     //    orderProducer.send("orders", orderDto);
     //
     //    ResponseOrder responseOrder = mapper.map(orderDto, ResponseOrder.class);
@@ -87,13 +87,13 @@ public class OrderController {
 
     List<Order> orders = orderService.getOrdersByUserId(userId);
 
-//    try {
-//      Thread.sleep(1000);
-//
-//      throw new Exception("Issue!!!");
-//    } catch (InterruptedException e) {
-//      log.warn(e.getMessage());
-//    }
+    //    try {
+    //      Thread.sleep(1000);
+    //
+    //      throw new Exception("Issue!!!");
+    //    } catch (InterruptedException e) {
+    //      log.warn(e.getMessage());
+    //    }
 
     log.info("After retrieve orders data");
 
