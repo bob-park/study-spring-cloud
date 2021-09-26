@@ -17,6 +17,8 @@ spring:
 #          uri: file:///Users/hwpark/Documents/study/spring-cloud-workspace/git-local-repo
           ## remote git repository
           uri: https://github.com/bob-park/study-spring-cloud-config.git
+         # username: [your username]
+         # password: [your password]
         ## Local file system
 #        native:
 #          search-locations:
