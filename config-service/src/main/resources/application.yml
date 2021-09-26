@@ -7,27 +7,25 @@ spring:
   application:
     name: config-service
   ## Local file system
-  profiles:
-    active: native
+#  profiles:
+#    active: native
   cloud:
     config:
       server:
-#        git:
+        git:
           ## local git repository
 #          uri: file:///Users/hwpark/Documents/study/spring-cloud-workspace/git-local-repo
           ## remote git repository
-#          uri: https://github.com/bob-park/study-spring-cloud.git
-#          username: [your username]
-#          password: [your password]
+          uri: https://github.com/bob-park/study-spring-cloud-config.git
         ## Local file system
-        native:
-          search-locations:
-            - file:///Users/hwpark/Documents/study/spring-cloud-workspace/git-local-repo
+#        native:
+#          search-locations:
+#            - file:///Users/hwpark/Documents/study/spring-cloud-workspace/git-local-repo
   rabbitmq:
     host: 127.0.0.1
     port: 5672
-    username: username
-    password: password
+    username: guest
+    password: guest
 
 ## management
 management:
