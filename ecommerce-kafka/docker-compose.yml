@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  ecommerce-zookeeper:
+    image: wurstmeister/zookeeper
+    container_name: ecommerce-zookeeper
+    ports:
+      - "42181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      my-network:
+        ipv4_address:  172.18.0.100
+
+  ecommerce-broker:
+    image: wurstmeister/kafka
+    container_name: ecommerce-broker
+    ports:
+      - "49092:9092"
+    depends_on:
+      - ecommerce-zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'ecommerce-zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,INTERNAL:PLAINTEXT
+      KAFKA_LISTENERS: PLAINTEXT://ecommerce-broker:9092,INTERNAL://ecommerce-broker:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:49092,INTERNAL://ecommerce-broker:29092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+    networks:
+      my-network:
+        ipv4_address: 172.18.0.101
+
+networks:
+  my-network:
+    name: ecommerce-network
